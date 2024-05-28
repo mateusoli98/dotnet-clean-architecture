@@ -11,5 +11,10 @@ namespace CleanArchitecture.Persistence.Repositories
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
         }
+
+        public async Task<User?> GetById(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        } 
     }
 }
