@@ -1,2 +1,1 @@
-# Clean Architecture + .NET
-Clean Architecture with .NET
+# Clean Architecture + .NET + CQRS
