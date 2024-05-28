@@ -1,12 +1,14 @@
 using CleanArchitecture.Persistence.Context;
 using CleanArchitecture.Persistence;
 using CleanArchitecture.Application.Services;
+using CleanArchitecture.WebAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.ConfigurePersistenceApp(builder.Configuration);
 builder.Services.ConfigureApplicationApp();
+builder.Services.ConfigureCorsPolicy();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -24,12 +26,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
 
 
