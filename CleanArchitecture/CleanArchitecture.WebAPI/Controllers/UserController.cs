@@ -1,4 +1,6 @@
 ﻿using CleanArchitecture.Application.UseCases.CreateUser;
+using CleanArchitecture.Application.UseCases.GetAllUser;
+using CleanArchitecture.Application.UseCases.UpdateUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,15 +20,26 @@ namespace CleanArchitecture.WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<CreateUserResponse>> Create(CreateUserRequest request, CancellationToken cancellationToken)
         {
-            //var validator = new CreateUserValidator();
-            //var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            var response = await _mediator.Send(request, cancellationToken);
 
-            //if (!validationResult.IsValid)
-            //{
-            //    var erros = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
+            return Ok(response);
+        }
 
-            //    return BadRequest(new { ErrorMessages = erros });
-            //}
+        [HttpGet]
+        public async Task<ActionResult<List<GetAllUserResponse>>> GetAll(CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetAllUserRequest(), cancellationToken);
+
+            return Ok(response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UpdateUserResponse>> Update(Guid id, UpdateUserRequest request, CancellationToken cancellationToken)
+        {
+            if (id != request.Id || request.Id == Guid.Empty)
+            {
+                return BadRequest("Invalid Guid");
+            }
 
             var response = await _mediator.Send(request, cancellationToken);
 

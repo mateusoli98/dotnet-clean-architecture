@@ -3,33 +3,30 @@ using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Interfaces;
 using MediatR;
 
-namespace CleanArchitecture.Application.UseCases.CreateUser
+namespace CleanArchitecture.Application.UseCases.UpdateUser
 {
-    public class CreateUserHandle : IRequestHandler<CreateUserRequest, CreateUserResponse>
+    public class UpdateUserHandle : IRequestHandler<UpdateUserRequest, UpdateUserResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public CreateUserHandle(
-            IUnitOfWork unitOfWork,
-            IUserRepository userRepository,
-            IMapper mapper)
+        public UpdateUserHandle(IUnitOfWork unitOfWork, IUserRepository userRepository, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
             _mapper = mapper;
         }
 
-        public async Task<CreateUserResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
+        public async Task<UpdateUserResponse> Handle(UpdateUserRequest request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
 
-            _userRepository.Create(user);
+            _userRepository.Update(user);
 
             await _unitOfWork.Commit(cancellationToken);
 
-            return _mapper.Map<CreateUserResponse>(user);
+            return _mapper.Map<UpdateUserResponse>(user);
         }
     }
 }
